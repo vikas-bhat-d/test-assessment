@@ -278,16 +278,14 @@
         }
       });
 
-      // Close popup
       document
         .getElementById("closeBtn")
         .addEventListener("click", function () {
           document.getElementById("popup").classList.remove("active");
           document.getElementById("overlay").classList.remove("active");
-          window.location.href = "test2.html";
+          window.location.href = "test.html";
         });
 
-      // Load questions on page load
       loadQuestions();
     </script>
   </body>

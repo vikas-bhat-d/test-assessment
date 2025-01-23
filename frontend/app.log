@@ -1,39 +1,42 @@
-2025-01-21T09:01:54.877Z [INFO]: Directory:
-2025-01-21T09:01:54.881Z [INFO]: [38;2;3;140;252mListening for changes on: C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend\dist[39m
-2025-01-21T09:01:54.881Z [INFO]: Runtime directory: C:\vikas\BE\Projects\LiveReload\runtime
-2025-01-21T09:01:54.883Z [INFO]: Cleaning public directory
-2025-01-21T09:01:54.888Z [INFO]: Cleaned the public directory
-2025-01-21T09:01:54.890Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend\dist detected..updating public directory..
-2025-01-21T09:02:00.743Z [INFO]: Added the files from source directory to public directory
-2025-01-21T09:02:00.745Z [INFO]: Server listening on port: 3000
-2025-01-21T09:02:00.746Z [INFO]: [38;2;252;248;3mURL: http://localhost:3000[39m
-2025-01-21T09:02:00.747Z [INFO]: Updated public directory with changed files succesfully..
-2025-01-21T09:02:08.006Z [INFO]: [38;2;252;3;53mShutting down server...[39m
-2025-01-21T09:02:08.007Z [INFO]: Cleaning public directory
-2025-01-21T09:02:08.060Z [INFO]: Cleaned the public directory
-2025-01-21T09:02:18.307Z [INFO]: Directory:
-2025-01-21T09:02:18.310Z [INFO]: [38;2;3;140;252mListening for changes on: C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend\dist[39m
-2025-01-21T09:02:18.311Z [INFO]: Runtime directory: C:\vikas\BE\Projects\LiveReload\runtime
-2025-01-21T09:02:18.315Z [INFO]: Cleaning public directory
-2025-01-21T09:02:18.319Z [INFO]: Cleaned the public directory
-2025-01-21T09:02:18.322Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend\dist detected..updating public directory..
-2025-01-21T09:02:19.111Z [INFO]: Added the files from source directory to public directory
-2025-01-21T09:02:19.112Z [INFO]: Server listening on port: 3000
-2025-01-21T09:02:19.112Z [INFO]: [38;2;252;248;3mURL: http://localhost:3000[39m
-2025-01-21T09:02:21.125Z [INFO]: Updated public directory with changed files succesfully..
-2025-01-21T09:02:31.412Z [INFO]: [38;2;252;3;53mShutting down server...[39m
-2025-01-21T09:02:31.413Z [INFO]: Cleaning public directory
-2025-01-21T09:02:31.431Z [INFO]: Cleaned the public directory
-2025-01-21T09:02:36.887Z [INFO]: [38;2;252;3;53mServer closed.[39m
-2025-01-21T11:45:07.707Z [INFO]: Directory:
-2025-01-21T11:45:07.710Z [INFO]: [38;2;3;140;252mListening for changes on: C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend[39m
-2025-01-21T11:45:07.711Z [INFO]: Runtime directory: C:\vikas\BE\Projects\LiveReload\runtime
-2025-01-21T11:45:07.713Z [INFO]: Cleaning public directory
-2025-01-21T11:45:07.742Z [INFO]: Cleaned the public directory
-2025-01-21T11:45:07.747Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
-2025-01-21T11:45:08.513Z [INFO]: Added the files from source directory to public directory
-2025-01-21T11:45:08.516Z [INFO]: Server listening on port: 8000
-2025-01-21T11:45:08.517Z [INFO]: [38;2;252;248;3mURL: http://localhost:8000[39m
-2025-01-21T11:45:10.490Z [INFO]: Updated public directory with changed files succesfully..
-2025-01-21T11:47:24.792Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
-2025-01-21T11:47:25.674Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:15:56.123Z [INFO]: Directory:
+2025-01-23T07:15:56.127Z [INFO]: [38;2;3;140;252mListening for changes on: C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend[39m
+2025-01-23T07:15:56.128Z [INFO]: Runtime directory: C:\vikas\BE\Projects\LiveReload\runtime
+2025-01-23T07:15:56.130Z [INFO]: Cleaning public directory
+2025-01-23T07:15:56.136Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:15:56.157Z [INFO]: Cleaned the public directory
+2025-01-23T07:16:00.308Z [INFO]: Added the files from source directory to public directory
+2025-01-23T07:16:00.310Z [INFO]: Server listening on port: 8000
+2025-01-23T07:16:00.311Z [INFO]: [38;2;252;248;3mURL: http://localhost:8000[39m
+2025-01-23T07:16:00.313Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:17:11.060Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:17:11.948Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:18:00.751Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:18:01.636Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:18:11.615Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:18:12.468Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:19:13.013Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:19:13.909Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:19:27.223Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:19:28.115Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:19:54.072Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:19:54.932Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:20:20.701Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:20:21.582Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:20:29.317Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:20:30.195Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:21:15.506Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:21:16.318Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:21:44.587Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:21:45.409Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:23:14.714Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:23:15.552Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:23:53.800Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:23:54.655Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:24:23.754Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:24:24.631Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:24:42.916Z [INFO]: Change in C:\vikas\BE\aitch nu internship\aitchnu-projects\mock-internview-platform-final\frontend detected..updating public directory..
+2025-01-23T07:24:43.753Z [INFO]: Updated public directory with changed files succesfully..
+2025-01-23T07:24:52.465Z [INFO]: [38;2;252;3;53mShutting down server...[39m
+2025-01-23T07:24:52.466Z [INFO]: Cleaning public directory
+2025-01-23T07:24:52.517Z [INFO]: Cleaned the public directory
+2025-01-23T07:24:55.036Z [INFO]: [38;2;252;3;53mServer closed.[39m
