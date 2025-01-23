@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard with Video Recorder</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #4e73df;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #001f3d;
+        border-bottom: 2px solid #ddd;
+        border-radius: 10px 10px 0 0;
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+        color: white;
+      }
+
+      nav button,
+      .record-button {
+        padding: 0.75rem 1.25rem;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+        background-color: #006f96;
+        color: white;
+      }
+
+      nav button:hover,
+      .record-button:hover {
+        background-color: #004d73;
+      }
+
+      select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      select:focus {
+        border-color: #006f96;
+      }
+
+      .button-container .button {
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 10px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .button.start {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .button.start:hover {
+        background-color: #218838;
+      }
+
+      .button.stop {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .button.stop:hover {
+        background-color: #c82333;
+      }
+
+      .button.upload {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .button.upload:hover {
+        background-color: #0056b3;
+      }
+
+      #alert {
+        display: none;
+        margin-top: 20px;
+        padding: 10px;
+        color: white;
+        background-color: #28a745;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      #alert.error {
+        background-color: #b3120a;
+      }
+
+      .video-card {
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-card:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+      }
+
+      .video-card button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .video-card button:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 768px) {
+        .video-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      form {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Student Dashboard</h1>
+      <nav>
+        <button onclick="showDashboard()">
+          <i class="bx bx-home"></i> Dashboard
+        </button>
+        <button onclick="showVideoSubmission()">
+          <i class="bx bx-cloud-upload"></i> Video Submissions
+        </button>
+      </nav>
+    </header>
+
+    <div id="dashboardSection" class="container">
+      <h1>Student Dashboard</h1>
+      <label for="teacherSelect">Select To:</label>
+      <select id="teacherSelect">
+        <option value="15">ADMIN</option>
+        <option value="17">HR</option>
+      </select>
+      <button class="record-button" onclick="showVideoRecorder()">
+        <i class="bx bx-video-recording"></i> Record Video
+      </button>
+    </div>
+
+    <div id="videoRecorderSection" class="container" style="display: none">
+      <h1>Video Recorder</h1>
+      <div class="video-container">
+        <video id="webcam" autoplay muted></video>
+        <div class="button-container">
+          <button id="startBtn" class="button start">Start Recording</button>
+          <button id="stopBtn" class="button stop" disabled>
+            Stop Recording
+          </button>
+          <button id="uploadBtn" class="button upload" disabled>Upload</button>
+        </div>
+        <div id="alert"></div>
+      </div>
+    </div>
+
+    <div id="uploadedVideosSection" class="container" style="display: none">
+      <h2>Previously Uploaded Videos</h2>
+      <div id="uploadedVideosContainer"></div>
+    </div>
+
+    <script>
+      const baseurl = "http://localhost:3000/user"; // Base API URL
+      const webcam = document.getElementById("webcam");
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const alertBox = document.getElementById("alert");
+      const teacherSelect = document.getElementById("teacherSelect");
+      const uploadedVideosContainer = document.getElementById(
+        "uploadedVideosContainer"
+      );
+
+      let mediaRecorder;
+      let recordedChunks = [];
+
+      // Initialize Webcam
+      async function initWebcam() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          webcam.srcObject = stream;
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) recordedChunks.push(event.data);
+          };
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: "video/webm" });
+            uploadBtn.disabled = false;
+          };
+        } catch (error) {
+          showAlert("Camera access denied!", true);
+        }
+      }
+      initWebcam();
+
+      // Start Recording
+      startBtn.addEventListener("click", () => {
+        recordedChunks = [];
+        mediaRecorder.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        showAlert("Recording started...", false);
+      });
+
+      // Stop Recording
+      stopBtn.addEventListener("click", () => {
+        mediaRecorder.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        showAlert("Recording stopped. You can now upload the video.", false);
+      });
+
+      // Upload Video
+      uploadBtn.addEventListener("click", async () => {
+        const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
+        const blobUrl = URL.createObjectURL(videoBlob, "video/webm");
+        console.log(blobUrl);
+        const formData = new FormData();
+        formData.append("video", videoBlob, "video.webm");
+        formData.append("to_id", teacherSelect.value);
+
+        try {
+          const response = await fetch(`${baseurl}/video`, {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+          });
+          const data = await response.json();
+          if (data.success) {
+            showAlert("Video uploaded successfully!", false);
+            loadUploadedVideos();
+          } else {
+            showAlert("Error uploading video.", true);
+          }
+        } catch (error) {
+          console.error("Error uploading video:", error);
+        }
+      });
+
+      // Load Uploaded Videos
+      async function loadUploadedVideos() {
+        try {
+          const response = await fetch(`${baseurl}/video`, {
+            credentials: "include",
+          });
+          const data = await response.json();
+          if (data.success) {
+            uploadedVideosContainer.innerHTML = "";
+            data.data.forEach((video) => {
+              const card = document.createElement("div");
+              card.className = "video-card";
+              const videoDate = new Date(video.uploaded_at).toLocaleString();
+              card.innerHTML = `
+                <div>
+                  <h3>${video.video_path}</h3>
+                  <p>Length: ${formatVideoLength(video.length)}</p>
+                  <p>Date: ${videoDate}</p>
+                </div>
+                <button onclick="playVideo('${video.video_path}')">Play</button>
+              `;
+              uploadedVideosContainer.appendChild(card);
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching uploaded videos:", error);
+        }
+      }
+
+      // Format Video Length
+      function formatVideoLength(lengthInSeconds) {
+        const minutes = Math.floor(lengthInSeconds / 60);
+        const seconds = lengthInSeconds % 60;
+        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      }
+
+      // Show Alerts
+      function showAlert(message, isError) {
+        alertBox.textContent = message;
+        alertBox.className = isError ? "error" : "";
+        alertBox.style.display = "block";
+        setTimeout(() => (alertBox.style.display = "none"), 3000);
+      }
+
+      // Show Dashboard
+      function showDashboard() {
+        document.getElementById("dashboardSection").style.display = "block";
+        document.getElementById("videoRecorderSection").style.display = "none";
+        document.getElementById("uploadedVideosSection").style.display = "none";
+      }
+
+      // Show Video Recorder
+      function showVideoRecorder() {
+        document.getElementById("dashboardSection").style.display = "none";
+        document.getElementById("videoRecorderSection").style.display = "block";
+        document.getElementById("uploadedVideosSection").style.display = "none";
+      }
+
+      // Show Video Submissions
+      function showVideoSubmission() {
+        loadUploadedVideos();
+        document.getElementById("dashboardSection").style.display = "none";
+        document.getElementById("videoRecorderSection").style.display = "none";
+        document.getElementById("uploadedVideosSection").style.display =
+          "block";
+      }
+
+      // Play Video
+      function playVideo(videoPath) {
+        const serverUrl = "http://localhost:3000";
+        const videoPlayer = document.createElement("video");
+        videoPlayer.controls = true;
+        videoPlayer.src = `${serverUrl}/${videoPath}`;
+
+        const existingVideo = document.querySelector(
+          "#uploadedVideosContainer video"
+        );
+        if (existingVideo) {
+          existingVideo.pause();
+          existingVideo.remove();
+        }
+
+        const container = document.getElementById("uploadedVideosContainer");
+        container.appendChild(videoPlayer);
+        videoPlayer.play();
+      }
+    </script>
+  </body>
+</html>

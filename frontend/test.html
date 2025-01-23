@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Dashboard</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Your existing styles */
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        color: #0e0d0d;
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: #001f3d; /* Navy blue header */
+        color: white;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #ddd;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      header .student-icon {
+        font-size: 40px;
+        margin-right: 10px;
+      }
+
+      nav a {
+        padding: 12px 25px;
+        background-color: #006f96; /* Navy blue button */
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        margin-left: 20px;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      nav a:hover {
+        background-color: #004d73; /* Darker shade for hover effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .container {
+        max-width: 750px;
+        margin: 40px auto;
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid #ddd; /* Border added */
+      }
+
+      h1 {
+        text-align: center;
+        color: black;
+        font-size: 1.7rem;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #090909;
+      }
+
+      select {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        transition: border 0.3s ease;
+      }
+
+      select:focus {
+        border-color: #0d0e0e; /* Focus color matches the header */
+        outline: none;
+      }
+
+      .counter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 200px;
+        margin: 10px auto 0;
+      }
+
+      .counter button {
+        padding: 10px 15px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        background-color: #f7f7f7;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .counter button:hover {
+        background-color: #ddd;
+        transform: scale(1.1);
+      }
+
+      .counter input {
+        width: 60px;
+        text-align: center;
+        font-size: 18px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 8px;
+        outline: none;
+      }
+
+      #takeTestBtn {
+        display: block;
+        width: 100%;
+        padding: 16px;
+        font-size: 18px;
+        background-color: #006f96; /* Navy blue button */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 30px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      #takeTestBtn:hover {
+        background-color: #004d73; /* Darker shade for hover effect */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      @media screen and (max-width: 768px) {
+        header {
+          flex-direction: column;
+          text-align: center;
+        }
+        nav a {
+          font-size: 1rem;
+          margin-top: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div style="display: flex; align-items: center">
+        <i class="bx bx-user-circle student-icon"></i>
+        <h1>Learning Portal</h1>
+      </div>
+      <nav>
+        <a href="resume.html">Build Resume</a>
+        <a href="quiz.html">Take Test</a>
+        <a href="video.html">Capture & Share</a>
+      </nav>
+    </header>
+    <div class="container">
+      <h1>Welcome to Your Learning Portal</h1>
+      <div class="form-group">
+        <label for="teacher">Select instructor:</label>
+        <select id="teacher" name="teacher">
+          <option value="" disabled selected>Select a instructor</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="subject">Select Subject:</label>
+        <select id="subject" name="subject" disabled>
+          <option value="" disabled selected>Select a subject</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="questions">Select Number of Questions:</label>
+        <div class="counter">
+          <button type="button" id="decrement">-</button>
+          <input
+            type="number"
+            id="questions"
+            name="questions"
+            value="1"
+            min="1"
+            readonly
+          />
+          <button type="button" id="increment">+</button>
+        </div>
+      </div>
+      <button id="takeTestBtn" disabled>Take Test</button>
+    </div>
+    <script>
+      const baseurl = "http://localhost:3000/user";
+      const teacherDropdown = document.getElementById("teacher");
+      const subjectDropdown = document.getElementById("subject");
+      const takeTestBtn = document.getElementById("takeTestBtn");
+      const questionsInput = document.getElementById("questions");
+      const incrementButton = document.getElementById("increment");
+      const decrementButton = document.getElementById("decrement");
+
+      // Fetch teachers dynamically
+      async function fetchTeachers() {
+        const response = await fetch(`${baseurl}/teachers`, {
+          credentials: "include",
+        });
+        console.log(response);
+        const teachers = await response.json();
+        console.log(teachers);
+
+        teachers.data.forEach((teacher) => {
+          const option = document.createElement("option");
+          option.value = teacher.id;
+          option.textContent = teacher.username;
+          teacherDropdown.appendChild(option);
+        });
+      }
+
+      // Fetch subjects based on the selected teacher
+      teacherDropdown.addEventListener("change", async () => {
+        subjectDropdown.disabled = false;
+        takeTestBtn.disabled = true;
+        subjectDropdown.innerHTML =
+          '<option value="" disabled selected>Select a subject</option>'; // Reset subjects
+
+        const response = await fetch(
+          `${baseurl}/subjects?teacherId=${teacherDropdown.value}`,
+          { credentials: "include" }
+        );
+        const subjects = await response.json();
+        console.log(subjects);
+
+        subjects.data.forEach((subject) => {
+          const option = document.createElement("option");
+          option.value = subject.id;
+          option.textContent = subject.name;
+          subjectDropdown.appendChild(option);
+        });
+      });
+
+      subjectDropdown.addEventListener("change", () => {
+        if (teacherDropdown.value && subjectDropdown.value) {
+          takeTestBtn.disabled = false;
+        }
+      });
+
+      incrementButton.addEventListener("click", () => {
+        const currentValue = parseInt(questionsInput.value, 10);
+        questionsInput.value = currentValue + 1;
+      });
+
+      decrementButton.addEventListener("click", () => {
+        const currentValue = parseInt(questionsInput.value, 10);
+        if (currentValue > 1) {
+          questionsInput.value = currentValue - 1;
+        }
+      });
+
+      takeTestBtn.addEventListener("click", () => {
+        if (teacherDropdown.value && subjectDropdown.value) {
+          window.location.href = `quiz.html?teacher=${
+            teacherDropdown.value
+          }&subject=${subjectDropdown.value}&subjectName=${
+            subjectDropdown.options[subjectDropdown.selectedIndex].innerHTML
+          }&questions=${questionsInput.value}`;
+        } else {
+          alert("Please select both a teacher and a subject.");
+        }
+      });
+
+      fetchTeachers();
+    </script>
+  </body>
+</html>

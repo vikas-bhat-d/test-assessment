@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .subject-header input[type="file"] {
+      display: none;
+      /* Hide the default file input */
+    }
+
+    .custom-file-label {
+      padding: 6px 8px;
+      background-color: #001f3d;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      display: inline-block;
+    }
+
+    .custom-file-label:hover {
+      background-color: #002f5c;
+      transform: translateY(-2px);
+    }
+
+
+    .container {
+      width: 80%;
+      max-width: 800px;
+      min-height: 100%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border: 2px solid #001f3d;
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .add-subject {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .add-subject input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .add-subject button {
+      padding: 12px 20px;
+      border: none;
+      background-color: #001f3d;
+      color: white;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .add-subject button:hover {
+      background-color: #002f5c;
+      transform: translateY(-2px);
+    }
+
+    .subject {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .subject-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subject-header h3 {
+      margin: 0;
+      flex: 1;
+    }
+
+    .subject-header input[type="file"] {
+      padding: 6px 8px;
+      background-color: #001f3d;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .subject-header button {
+      padding: 8px 12px;
+      background-color: #001f3d;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .subject-header button:hover,
+    .subject-header input[type="file"]:hover {
+      background-color: #002f5c;
+      transform: translateY(-2px);
+    }
+
+    .questions {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .questions button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #001f3d;
+      color: white;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      margin-top: 10px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .questions button:hover {
+      background-color: #002f5c;
+      transform: translateY(-2px);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #043e7c;
+      color: white;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    header button {
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      background-color: #001f3d;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header button:hover {
+      background-color: #002f5c;
+      transform: translateY(-2px);
+    }
+
+    .mcq-form input {
+      margin-bottom: 5px;
+      width: calc(100% - 20px);
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Teacher Portal</h1>
+    <nav>
+      <button onclick="window.location.href = 'teacher_dashboard.html';">
+        Dashboard
+      </button>
+      <button onclick="window.location.href = 'video_review.html';">
+        Video Submission
+      </button>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Teacher Dashboard</h1>
+
+    <div class="add-subject">
+      <input type="text" id="subjectInput" placeholder="Enter new subject" />
+      <button onclick="addSubject()">Add Subject</button>
+    </div>
+    <div id="subjectsContainer"></div>
+  </div>
+
+  <script>
+    let subjects = [
+      {
+        name: "Mathematics",
+        questions: [
+          {
+            question_text: "What is 2 + 2?",
+            option_a: "3",
+            option_b: "4",
+            option_c: "5",
+            option_d: "6",
+          },
+          {
+            question_text: "What is 10 / 2?",
+            option_a: "3",
+            option_b: "4",
+            option_c: "5",
+            option_d: "6",
+          },
+        ],
+      },
+      {
+        name: "Science",
+        questions: [
+          {
+            question_text: "What is H2O?",
+            option_a: "Oxygen",
+            option_b: "Water",
+            option_c: "Hydrogen",
+            option_d: "Carbon",
+          },
+        ],
+      },
+    ];
+
+    function addSubject() {
+      const subjectInput = document.getElementById("subjectInput");
+      const subjectName = subjectInput.value.trim();
+      if (subjectName === "") {
+        alert("Please enter a subject name.");
+        return;
+      }
+
+      const newSubject = {
+        name: subjectName,
+        questions: [],
+      };
+      subjects.push(newSubject);
+      subjectInput.value = "";
+      renderSubjects();
+    }
+
+    function renderSubjects() {
+      const subjectsContainer = document.getElementById("subjectsContainer");
+      subjectsContainer.innerHTML = "";
+
+      subjects.forEach((subject, index) => {
+        const subjectDiv = document.createElement("div");
+        subjectDiv.className = "subject";
+        subjectDiv.innerHTML = `
+            <div class="subject-header">
+  <h3>${subject.name}</h3>
+  <label class="custom-file-label" for="file-${index}">Choose File</label>
+  <input type="file" id="file-${index}" />
+  <button onclick="toggleQuestions(${index})">Toggle Questions</button>
+</div>
+
+            <div class="questions" id="questions-${index}" style="display: none;">
+              ${subject.questions
+            .map(
+              (q, i) => `
+                <div class="mcq">
+                  <p><strong>Q${i + 1}: ${q.question_text}</strong></p>
+                  <ul>
+                    <li>A: ${q.option_a}</li>
+                    <li>B: ${q.option_b}</li>
+                    <li>C: ${q.option_c}</li>
+                    <li>D: ${q.option_d}</li>
+                  </ul>
+                </div>
+              `
+            )
+            .join("")}
+              <div class="mcq-form">
+                <input type="text" id="questionInput-${index}" placeholder="Enter MCQ question" />
+                <input type="text" id="optionA-${index}" placeholder="Option A" />
+                <input type="text" id="optionB-${index}" placeholder="Option B" />
+                <input type="text" id="optionC-${index}" placeholder="Option C" />
+                <input type="text" id="optionD-${index}" placeholder="Option D" />
+                <button onclick="addQuestion(${index})">Add Question</button>
+              </div>
+            </div>
+          `;
+        subjectsContainer.appendChild(subjectDiv);
+      });
+    }
+
+    function addQuestion(index) {
+      const subject = subjects[index];
+      const questionText = document.getElementById(`questionInput-${index}`).value.trim();
+      const optionA = document.getElementById(`optionA-${index}`).value.trim();
+      const optionB = document.getElementById(`optionB-${index}`).value.trim();
+      const optionC = document.getElementById(`optionC-${index}`).value.trim();
+      const optionD = document.getElementById(`optionD-${index}`).value.trim();
+
+      if (!questionText || !optionA || !optionB || !optionC || !optionD) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      subject.questions.push({
+        question_text: questionText,
+        option_a: optionA,
+        option_b: optionB,
+        option_c: optionC,
+        option_d: optionD,
+      });
+
+      renderSubjects();
+    }
+
+    function toggleQuestions(index) {
+      const questionsDiv = document.getElementById(`questions-${index}`);
+      questionsDiv.style.display =
+        questionsDiv.style.display === "none" ? "block" : "none";
+    }
+
+    // Initial rendering
+    renderSubjects();
+  </script>
+</body>
+
+</html>

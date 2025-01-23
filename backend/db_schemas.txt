@@ -1,0 +1,105 @@
+CREATE TABLE `invoice_items` (
+  `invoice_item_id` int NOT NULL AUTO_INCREMENT,
+  `invoice_id` int NOT NULL,
+  `item_id` int NOT NULL,
+  `item_name` varchar(255) NOT NULL,
+  `item_code` varchar(50) DEFAULT NULL,
+  `quantity` decimal(10,2) NOT NULL DEFAULT '1.00',
+  `price` decimal(10,2) NOT NULL,
+  `discount_percentage` decimal(5,2) DEFAULT '0.00',
+  `tax` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`invoice_item_id`),
+  KEY `invoice_id` (`invoice_id`),
+  KEY `item_id` (`item_id`),
+  CONSTRAINT `invoice_items_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `sales_invoice` (`invoice_id`) ON DELETE CASCADE,
+  CONSTRAINT `invoice_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `items` (
+  `item_id` int NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(255) NOT NULL,
+  `item_type` enum('product','service') DEFAULT 'product',
+  `sales_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `gst_rate` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `measuring_unit` enum('PCS','GRAMS','LITERS','KGS','MTRS') NOT NULL DEFAULT 'PCS',
+  `opening_stock` decimal(10,2) DEFAULT NULL,
+  `item_code` varchar(50) DEFAULT NULL,
+  `purchase_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`item_id`),
+  UNIQUE KEY `opening_stock_UNIQUE` (`opening_stock`),
+  UNIQUE KEY `item_code` (`item_code`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `otp_tokens` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `otp` varchar(6) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `is_used` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `parties` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `phone_number` varchar(45) DEFAULT NULL,
+  `email` varchar(45) NOT NULL,
+  `GSTIN` varchar(45) DEFAULT NULL,
+  `type` enum('CUSTOMER','SUPPLIER') DEFAULT NULL,
+  `billing_address` varchar(200) DEFAULT NULL,
+  `shipping_address` varchar(200) DEFAULT NULL,
+  `to_collect` decimal(10,2) DEFAULT '0.00',
+  `to_pay` decimal(10,2) DEFAULT '0.00',
+  `userID` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userID_idx` (`userID`),
+  CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+CREATE TABLE `sales_invoice` (
+  `invoice_id` int NOT NULL AUTO_INCREMENT,
+  `bill_to` int NOT NULL,
+  `ship_to` int NOT NULL,
+  `invoice_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `subtotal` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `total_discount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `total_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `grand_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `amount_paid` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` enum('paid','unpaid','partially_paid') DEFAULT 'unpaid',
+  PRIMARY KEY (`invoice_id`),
+  KEY `bill_to` (`bill_to`),
+  KEY `ship_to` (`ship_to`),
+  CONSTRAINT `sales_invoice_ibfk_1` FOREIGN KEY (`bill_to`) REFERENCES `parties` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `sales_invoice_ibfk_2` FOREIGN KEY (`ship_to`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `otp` varchar(45) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `refreshToken` varchar(500) DEFAULT NULL,
+  `GSTIN` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+

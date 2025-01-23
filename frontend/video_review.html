@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #001f3d;
+        /* Navy blue */
+        color: #ffffff;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      header button,
+      #feedback-button {
+        padding: 0.6rem 1rem;
+        /* Smaller button size */
+        font-size: 0.9rem;
+        /* Smaller font size */
+        font-weight: 600;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      header button {
+        background-color: #120657;
+        color: #fff;
+      }
+
+      header button:hover {
+        background-color: #054379;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      #feedback-button {
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      #feedback-button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      header button:focus,
+      #feedback-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        /* Focus ring */
+      }
+
+      header button:disabled,
+      #feedback-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .dashboard-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 2px solid #001f3d;
+        /* Navy blue border */
+      }
+
+      .dashboard-container h2 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      #uploaded-videos-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .video-card {
+        background: #f4f4f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: box-shadow 0.3s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .video-card:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-card div {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .video-card button {
+        margin-left: 10px;
+      }
+
+      .video-card span {
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      /* Play Button Styling */
+      .video-card button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .video-card button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-card button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        /* Focus ring */
+      }
+
+      .video-card button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      #video-container {
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+
+      #feedback-container {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 2px solid #001f3d;
+        /* Navy blue border */
+      }
+
+      #feedback-container h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+        color: #333;
+      }
+
+      #feedback-input {
+        width: 100%;
+        height: 80px;
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Teacher Portal</h1>
+      <nav>
+        <button onclick="window.location.href = 'admin_dashboard.html';">
+          Dashboard
+        </button>
+        <button onclick="window.location.href = 'video_review.html';">
+          Video Submission
+        </button>
+      </nav>
+    </header>
+    <div class="dashboard-container">
+      <h2>Uploaded Videos</h2>
+      <ul id="uploaded-videos-list"></ul>
+
+      <div id="video-container" style="display: none">
+        <video id="video-player" controls>
+          <source src="" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div id="feedback-container" style="display: none">
+        <h3>Provide Feedback</h3>
+        <textarea
+          id="feedback-input"
+          placeholder="Write your feedback here..."
+        ></textarea>
+        <br />
+        <button id="feedback-button">Submit Feedback</button>
+      </div>
+    </div>
+    <!-- <script>
+      let teacher_id = 15;
+      let feedback = "";
+      const videoContainer = document.getElementById("video-container");
+      const feedbackContainer = document.getElementById("feedback-container");
+      const feedbackInput = document.getElementById("feedback-input");
+      const feedbackButton = document.getElementById("feedback-button");
+      const uploadedVideosList = document.getElementById(
+        "uploaded-videos-list"
+      );
+
+      feedbackButton.addEventListener("click", () =>
+        submitFeedback(teacher_id)
+      );
+
+      async function loadTeacherVideos() {
+        // Dummy data to simulate video uploads
+        const dummyVideos = [
+          {
+            id: 1,
+            video_path: "video1.mp4",
+            length: 180,
+            uploaded_at: "2025-01-18T10:00:00",
+            feedback: "",
+          },
+          {
+            id: 2,
+            video_path: "video2.mp4",
+            length: 210,
+            uploaded_at: "2025-01-17T11:30:00",
+            feedback: "",
+          },
+          {
+            id: 3,
+            video_path: "video3.mp4",
+            length: 150,
+            uploaded_at: "2025-01-16T15:45:00",
+            feedback: "",
+          },
+        ];
+
+        uploadedVideosList.innerHTML = "";
+
+        dummyVideos.forEach((video) => {
+          const listItem = document.createElement("li");
+          const videoLength = formatVideoLength(video.length);
+          const videoDate = new Date(video.uploaded_at).toLocaleString();
+
+          listItem.innerHTML = `
+            <div class="video-card">
+              <div>
+                <strong>${video.video_path}</strong><br>
+                ID: ${video.id} | Date: ${videoDate} | Length: ${videoLength}
+              </div>
+              <button onclick="playVideo('${video.video_path}')">Play</button>
+            </div>
+          `;
+
+          uploadedVideosList.appendChild(listItem);
+        });
+      }
+
+      function formatVideoLength(lengthInSeconds) {
+        const minutes = Math.floor(lengthInSeconds / 60);
+        const seconds = lengthInSeconds % 60;
+        return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+      }
+
+      function playVideo(videoPath) {
+        const videoPlayer = document.getElementById("video-player");
+        videoPlayer.src = `http://localhost:3000/${videoPath}`;
+        videoContainer.style.display = "block";
+        videoPlayer.load();
+        videoPlayer.play();
+        showFeedbackForm();
+      }
+
+      function showFeedbackForm() {
+        feedbackContainer.style.display = "block";
+      }
+
+      async function submitFeedback(videoId) {
+        const feedbackText = feedbackInput.value;
+        if (feedbackText.trim() === "") {
+          alert("Please provide feedback.");
+          return;
+        }
+
+        try {
+          // Simulating feedback submission
+          console.log("Submitting feedback for video ID:", videoId);
+          alert("Feedback submitted successfully!");
+          feedbackInput.value = "";
+          feedbackContainer.style.display = "none";
+          videoContainer.style.display = "none";
+        } catch (error) {
+          console.error("Error submitting feedback:", error);
+          alert("An error occurred while submitting feedback.");
+        }
+      }
+
+      loadTeacherVideos();
+    </script> -->
+    <script>
+      const videoContainer = document.getElementById("video-container");
+      const feedbackContainer = document.getElementById("feedback-container");
+      const feedbackInput = document.getElementById("feedback-input");
+      const feedbackButton = document.getElementById("feedback-button");
+      const uploadedVideosList = document.getElementById(
+        "uploaded-videos-list"
+      );
+      const baseurl = "http://localhost:3000/user";
+      let teacher_id = 15;
+
+      feedbackButton.addEventListener("click", () =>
+        submitFeedback(teacher_id)
+      );
+
+      async function loadTeacherVideos() {
+        try {
+          const response = await fetch(`${baseurl}/video`, {
+            method: "GET",
+            credentials: "include",
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            uploadedVideosList.innerHTML = "";
+
+            const teacherVideos = data.data.filter(
+              (video) => video.to_id === teacher_id
+            );
+
+            teacherVideos.forEach((video) => {
+              const listItem = document.createElement("li");
+              const videoLength = formatVideoLength(video.length);
+              const videoDate = new Date(video.uploaded_at).toLocaleString();
+
+              listItem.innerHTML = `
+                <div class="video-card">
+                  <strong>${video.video_path}</strong><br>
+                  ID: ${video.id} | Date: ${videoDate} | Length: ${videoLength}
+                </div>
+              `;
+
+              listItem.addEventListener("click", () => {
+                teacher_id = video.id;
+                const feedback = video.feedback ? video.feedback : "";
+                openVideoPlayer(video.video_path);
+                showFeedbackForm(feedback);
+              });
+
+              uploadedVideosList.appendChild(listItem);
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching teacher videos:", error);
+        }
+      }
+
+      function formatVideoLength(lengthInSeconds) {
+        const minutes = Math.floor(lengthInSeconds / 60);
+        const seconds = lengthInSeconds % 60;
+        return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+      }
+
+      function openVideoPlayer(videoPath) {
+        const videoPlayer = document.getElementById("video-player");
+        videoPlayer.src = `http://localhost:3000/${videoPath}`;
+        videoContainer.style.display = "block";
+        videoPlayer.load();
+        videoPlayer.play();
+      }
+
+      function showFeedbackForm(feedback) {
+        feedbackInput.value = feedback;
+        feedbackContainer.style.display = "block";
+      }
+
+      async function submitFeedback(videoId) {
+        const feedbackText = feedbackInput.value;
+        if (feedbackText.trim() === "") {
+          alert("Please provide feedback.");
+          return;
+        }
+
+        try {
+          const response = await fetch(`${baseurl}/feedback`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              videoId: videoId,
+              feedback: feedbackText,
+            }),
+            credentials: "include",
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert("Feedback submitted successfully!");
+            setTimeout(() => {
+              feedbackContainer.style.display = "none";
+              videoContainer.style.display = "none";
+            }, 1000);
+          } else {
+            alert("Failed to submit feedback. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error submitting feedback:", error);
+          alert("An error occurred while submitting feedback.");
+        }
+      }
+
+      loadTeacherVideos();
+    </script>
+  </body>
+</html>

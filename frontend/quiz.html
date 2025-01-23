@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Math Quiz</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f3f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        padding-top: 50px;
+      }
+
+      .container {
+        max-width: 800px;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        color: #333;
+        width: 100%;
+        height: auto;
+        max-width: 600px;
+        border: 3px solid #001f3d; /* Navy blue border */
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+      }
+
+      .question {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .options {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+      }
+
+      .options li {
+        margin: 12px 0;
+        font-size: 1.1rem;
+      }
+
+      .options input {
+        margin-right: 15px;
+      }
+
+      #quizForm {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .submit-btn {
+        width: auto;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        background-color: #001f3d; /* Navy blue button */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: 25px;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        align-self: center;
+      }
+
+      .submit-btn:hover {
+        background-color: #004d73; /* Darker navy blue for hover */
+      }
+
+      .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        color: #333;
+        text-align: center;
+        display: none;
+        z-index: 1000;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+        border: 3px solid #0b0200;
+      }
+
+      .popup.active {
+        display: block;
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      .popup p {
+        margin: 20px 0;
+        font-size: 1.3rem;
+      }
+
+      .close-btn {
+        background-color: #001f3d; /* Navy blue button */
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .close-btn:hover {
+        background-color: #004d73; /* Darker navy blue for hover */
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: none;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .overlay.active {
+        display: block;
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="heading">Math Quiz</h1>
+      <form id="quizForm">
+        <!-- Questions will be dynamically populated here -->
+      </form>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="popup" id="popup">
+      <p id="resultMessage"></p>
+      <button class="close-btn" id="closeBtn">Close</button>
+    </div>
+
+    <script>
+      const baseurl = "http://localhost:3000/user";
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Extract query parameters
+      const teacherId = urlParams.get("teacher");
+      const subjectId = urlParams.get("subject");
+      const numQuestions = urlParams.get("questions");
+      const subjectName = urlParams.get("subjectName");
+
+      const quizForm = document.getElementById("quizForm");
+      document.querySelector(".heading").innerHTML = `${subjectName} Quiz`;
+      // Fetch and populate questions
+      async function loadQuestions() {
+        try {
+          const response = await fetch(
+            `${baseurl}/questions?subjectId=${subjectId}&numQuestions=${numQuestions}`,
+            {
+              credentials: "include",
+            }
+          );
+
+          const data = await response.json();
+          console.log(data);
+          //   if (!data.success) throw new Error("Failed to fetch questions");
+          if (!data) throw new Error("Failed to fetch questions");
+
+          const questionsHtml = data
+            .map(
+              (question, index) => `
+                    <div class="question-container">
+                        <p>${index + 1}. ${question.question_text}</p>
+                        <ul class="options">
+                            <li><input type="radio" name="q${
+                              question.id
+                            }" value="A"> ${question.option_a}</li>
+                            <li><input type="radio" name="q${
+                              question.id
+                            }" value="B"> ${question.option_b}</li>
+                            <li><input type="radio" name="q${
+                              question.id
+                            }" value="C"> ${question.option_c}</li>
+                            <li><input type="radio" name="q${
+                              question.id
+                            }" value="D"> ${question.option_d}</li>
+                        </ul>
+                    </div>
+                `
+            )
+            .join("");
+
+          // Append questions and submit button
+          quizForm.innerHTML = `
+                    ${questionsHtml}
+                    <button type="submit" class="submit-btn">Submit Quiz</button>
+                `;
+        } catch (error) {
+          console.error("Error loading questions:", error);
+        }
+      }
+
+      // Handle quiz submission
+      quizForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        try {
+          // Collect answers
+          const formData = new FormData(quizForm);
+          const answers = [...formData.entries()].map(([key, value]) => ({
+            questionId: key.replace("q", ""), // Remove 'q' prefix
+            selectedOption: value || null,
+          }));
+
+          // Submit answers to API
+          const response = await fetch(`${baseurl}/submit-test`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ subjectId, answers }),
+            credentials: "include",
+          });
+
+          const result = await response.json();
+          if (!result.success) throw new Error("Test submission failed");
+
+          // Calculate percentage and feedback
+          const percentage =
+            (result.data.score / result.data.numQuestions) * 100;
+          let feedback = "";
+          if (percentage >= 80) {
+            feedback = "Fantastic work! You’ve truly mastered the material.";
+          } else if (percentage >= 60) {
+            feedback =
+              "Great job! With a little more practice, you’ll excel further.";
+          } else if (percentage >= 40) {
+            feedback = "Good attempt! Focus on areas where you struggled.";
+          } else {
+            feedback =
+              "Keep learning and practicing! You’ll improve over time.";
+          }
+
+          // Display popup with results
+          const resultMessage = `You scored ${result.data.score}/${
+            result.data.numQuestions
+          } (${percentage.toFixed(2)}%). ${feedback}`;
+          document.getElementById("resultMessage").textContent = resultMessage;
+          document.getElementById("overlay").classList.add("active");
+          document.getElementById("popup").classList.add("active");
+        } catch (error) {
+          console.error("Error submitting quiz:", error);
+          alert(
+            "An error occurred while submitting your quiz. Please try again."
+          );
+        }
+      });
+
+      // Close popup
+      document
+        .getElementById("closeBtn")
+        .addEventListener("click", function () {
+          document.getElementById("popup").classList.remove("active");
+          document.getElementById("overlay").classList.remove("active");
+          window.location.href = "test2.html";
+        });
+
+      // Load questions on page load
+      loadQuestions();
+    </script>
+  </body>
+</html>

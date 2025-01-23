@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teachers and Students Portal</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f8fc;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      header {
+        background-color: #001f3f;
+        color: white;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 3rem;
+        font-family: "Georgia", serif;
+        letter-spacing: 2px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #f4a261;
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      header p {
+        margin: 10px 0 0;
+        font-size: 1.25rem;
+        font-style: italic;
+        font-weight: 500;
+        color: #f1faee;
+      }
+
+      .container {
+        text-align: center;
+        margin-top: 50px;
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .quote {
+        font-size: 1.8rem;
+        font-family: "Georgia", serif;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 30px;
+        padding: 20px;
+        border-left: 5px solid #f4a261;
+        background-color: #fff8f0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        font-style: italic;
+        transform: scale(1.05);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .quote:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .cta-button {
+        display: inline-block;
+        background-color: #001f3f;
+        color: white;
+        padding: 15px 30px;
+        font-size: 1.25rem;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 30px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .cta-button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        transform: translateY(-3px);
+      }
+
+      .build-resume-button {
+        display: inline-block;
+        background-color: #041764;
+        color: white;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .build-resume-button:hover {
+        background-color: #040224;
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .build-resume-button:active {
+        transform: scale(0.98);
+      }
+
+      footer {
+        background-color: #001f3f;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        font-size: 1rem;
+      }
+
+      footer p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+
+      .container {
+        animation: fadeIn 1.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to the Knowledge Hub</h1>
+      <p>Empowering Knowledge for a Better Future</p>
+    </header>
+
+    <div class="container">
+      <p class="quote">
+        "A good education can change anyone. A good knowledge can change
+        everything."
+      </p>
+      <a href="login.html" class="cta-button">Get started</a>
+      <a href="resume.html" class="build-resume-button">Build Resume</a>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Teachers and Students Portal. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
