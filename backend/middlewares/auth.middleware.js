@@ -7,9 +7,6 @@ import User from "../model/user.model.js";
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   const accessToken = req.cookies?.accessToken;
 
-  console.log("accessToken", accessToken);
-
-  console.log("verify jwt called");
   if (!accessToken || accessToken === undefined) {
     return res
       .status(400)
@@ -22,7 +19,6 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     return res.status(400).send(new apiResponse(400, null, "Invalid token"));
 
   const user = await User.findById(decodedToken.id);
-  console.log(user);
   if (!user)
     return res
       .status(400)

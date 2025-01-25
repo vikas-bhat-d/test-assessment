@@ -1,4 +1,3 @@
-import { text } from "express";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -44,6 +43,44 @@ Feedback:
 We encourage you to review the feedback and make any necessary improvements.
 
 If you have any questions, feel free to reach out.`,
+    };
+
+    const result = await transporter.sendMail(mailOptions);
+    console.log("resutlt", result);
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const sendRequestStatusMail = async (data) => {
+  console.log(data);
+  try {
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: data.email,
+      subject: "New Interview Request",
+      text: data?.text_message,
+    };
+
+    const result = await transporter.sendMail(mailOptions);
+    console.log("resutlt", result);
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const sendNewRequestEmail = async (data) => {
+  console.log(data);
+  try {
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: data.email,
+      subject: "New Request for the interview",
+      text: data?.text_message,
     };
 
     const result = await transporter.sendMail(mailOptions);

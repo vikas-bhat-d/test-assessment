@@ -5,13 +5,16 @@ import {
   addQuestions,
   addSubject,
   fetchVideo,
+  getInterviewRequests,
   getQuestions,
   getSubjects,
   getTeacher,
   login,
   parseExcel,
   register,
+  requestInterview,
   submitTest,
+  updateInterviewStatus,
   uploadVideo,
 } from "../controller/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
@@ -53,3 +56,7 @@ userRouter.route("/excel").post(upload.single("data"), verifyJWT, parseExcel);
 
 userRouter.route("/video").get(verifyJWT, fetchVideo);
 userRouter.route("/feedback").post(verifyJWT, addFeedback);
+
+userRouter.route("/request-interview").post(verifyJWT, requestInterview);
+userRouter.route("/interview-requests").get(verifyJWT, getInterviewRequests);
+userRouter.route("/update-status").post(verifyJWT, updateInterviewStatus);

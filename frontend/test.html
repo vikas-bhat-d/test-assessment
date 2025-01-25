@@ -13,7 +13,6 @@
       rel="stylesheet"
     />
     <style>
-      /* Your existing styles */
       body {
         font-family: "Roboto", sans-serif;
         background-color: #f2f2f2;
@@ -21,12 +20,19 @@
         padding: 0;
         color: #0e0d0d;
         line-height: 1.6;
+        position: relative;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       header {
         background-color: #001f3d; /* Navy blue header */
         color: white;
         padding: 20px 40px;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -46,7 +52,8 @@
         margin-right: 10px;
       }
 
-      nav a {
+      nav a,
+      nav button {
         padding: 12px 25px;
         background-color: #006f96; /* Navy blue button */
         color: white;
@@ -60,19 +67,23 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
 
-      nav a:hover {
+      nav a:hover,
+      nav button:hover {
         background-color: #004d73; /* Darker shade for hover effect */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       }
 
       .container {
         max-width: 750px;
-        margin: 40px auto;
+        width: 60%;
+        margin-top: 40px;
         background-color: white;
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         border: 2px solid #ddd; /* Border added */
+        z-index: 0;
+        position: relative;
       }
 
       h1 {
@@ -161,12 +172,276 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       }
 
+      .requests-container {
+        max-width: 750px;
+        width: 60%;
+        margin-top: 10px;
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid #ddd; /* Border added */
+        z-index: 0;
+        position: relative;
+      }
+
+      .request-category {
+        margin-bottom: 20px;
+      }
+
+      .request-category h2 {
+        margin-bottom: 10px;
+      }
+
+      .request-category ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .request-category ul li {
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .request-category ul li button {
+        border: none;
+        min-height: 90%;
+        color: white;
+        background-color: #4dc551;
+        border-radius: 5px;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .request-category ul li button:hover {
+        transform: scale(1.1);
+      }
+
+      .request-category ul li button:active {
+        transform: scale(0.9);
+      }
+
+      #accepted-requests ul li {
+        border: 2px solid;
+        border-color: #4dc551;
+      }
+
+      #pending-requests ul li {
+        border: 2px solid;
+        border-color: #ecdf1c;
+      }
+
+      #rejected-requests ul li {
+        border: 2px solid;
+        border-color: #e92525;
+      }
+
+      .popup-container {
+        position: absolute;
+        width: 40%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        min-height: 40vh;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        max-width: 800px;
+        z-index: 100;
+
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        display: none;
+      }
+      .blur-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background-color: rgba(9, 9, 9, 0.3);
+        -webkit-backdrop-filter: blur(1px);
+        backdrop-filter: blur(1px);
+        display: none;
+      }
+
+      .close-btn {
+        border: none;
+        background-color: transparent;
+        font-size: larger;
+        position: absolute;
+        top: 10px;
+        right: 9px;
+        transition: all 0.3s ease-in-out;
+      }
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      .close-btn:active {
+        transform: scale(0.9);
+      }
+
+      #interviewer-dropdown {
+        width: 95.5%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      #datetime {
+        width: 95.5%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+
+      .submit-request {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        position: relative;
+      }
+
+      .submit-request:hover {
+        background-color: #45a049;
+      }
+
+      .submit-request.loading {
+        cursor: not-allowed;
+        background-color: #ccc;
+      }
+
+      .submit-request.loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-top: 2px solid #4caf50;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        position: relative;
+        width: 90%;
+        max-width: 400px;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ff4d4d;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .close-btn:hover {
+        background: #d93636;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #007bff;
+        border-radius: 50%;
+        animation: spin2 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      .join-meeting {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: none; /* Initially hidden */
+      }
+
+      .join-meeting:hover {
+        background-color: #218838;
+      }
+
+      #readyMessage {
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      @keyframes spin2 {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       @media screen and (max-width: 768px) {
         header {
           flex-direction: column;
           text-align: center;
         }
-        nav a {
+        nav a,
+        nav button {
           font-size: 1rem;
           margin-top: 10px;
         }
@@ -180,6 +455,9 @@
         <h1>Learning Portal</h1>
       </div>
       <nav>
+        <button class="request-button" onclick="showPopUp(event)">
+          Request An Interview
+        </button>
         <a href="resume.html">Build Resume</a>
         <a href="video.html">Capture & Share</a>
       </nav>
@@ -215,6 +493,49 @@
       </div>
       <button id="takeTestBtn" disabled>Take Test</button>
     </div>
+    <div class="requests-container">
+      <h1>Past Interview Requests</h1>
+      <div id="accepted-requests" class="request-category">
+        <h2>Accepted</h2>
+        <ul></ul>
+      </div>
+      <div id="pending-requests" class="request-category">
+        <h2>Pending</h2>
+        <ul></ul>
+      </div>
+      <div id="rejected-requests" class="request-category">
+        <h2>Rejected</h2>
+        <ul></ul>
+      </div>
+    </div>
+    <div class="popup-container">
+      <button class="close-btn" onclick="hidePopUp(event)">
+        <i class="bx bx-x"></i>
+      </button>
+      <div>
+        <select name="" id="interviwer-dropdown"></select>
+        <input type="datetime-local" id="datetime" />
+        <button class="submit-request">Make Request</button>
+      </div>
+    </div>
+    <div class="modal" id="meetModal">
+      <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <h2 id="modalHeader">Preparing Your Meeting</h2>
+        <div class="loading-spinner" id="loadingSpinner"></div>
+        <p id="readyMessage">
+          Ready to go! Click the button below to join the meeting.
+        </p>
+        <button
+          class="join-meeting"
+          id="joinMeetingBtn"
+          onclick="openMeeting(event)"
+        >
+          Join Meeting
+        </button>
+      </div>
+    </div>
+    <div class="blur-bg"></div>
     <script>
       const baseurl = "http://localhost:3000/user";
       const teacherDropdown = document.getElementById("teacher");
@@ -223,6 +544,11 @@
       const questionsInput = document.getElementById("questions");
       const incrementButton = document.getElementById("increment");
       const decrementButton = document.getElementById("decrement");
+      const interviewerDropdown = document.getElementById(
+        "interviwer-dropdown"
+      );
+      const datetimeInput = document.getElementById("datetime");
+      const submitButton = document.querySelector(".submit-request");
 
       // Fetch teachers dynamically
       async function fetchTeachers() {
@@ -238,10 +564,13 @@
           option.value = teacher.id;
           option.textContent = teacher.username;
           teacherDropdown.appendChild(option);
+          const option2 = document.createElement("option");
+          option2.value = teacher.id;
+          option2.textContent = teacher.username;
+          interviewerDropdown.appendChild(option2);
         });
       }
 
-      // Fetch subjects based on the selected teacher
       teacherDropdown.addEventListener("change", async () => {
         subjectDropdown.disabled = false;
         takeTestBtn.disabled = true;
@@ -293,7 +622,173 @@
         }
       });
 
-      fetchTeachers();
+      function showPopUp(e) {
+        console.log(e);
+        const popupContainer = document.querySelector(".popup-container");
+        const blurContainer = document.querySelector(".blur-bg");
+        console.log(popupContainer);
+        console.log(blurContainer);
+        popupContainer.style.display = "flex";
+        blurContainer.style.display = "block";
+      }
+
+      function hidePopUp(e) {
+        console.log(e);
+        const popupContainer = document.querySelector(".popup-container");
+        const blurContainer = document.querySelector(".blur-bg");
+        console.log(popupContainer);
+        console.log(blurContainer);
+        popupContainer.style.display = "none";
+        blurContainer.style.display = "none";
+      }
+
+      async function fetchInterviewRequests() {
+        try {
+          const response = await fetch(`${baseurl}/interview-requests`, {
+            credentials: "include",
+          });
+          const data = await response.json();
+          console.log(data);
+          const acceptedRequests = data.filter(
+            (request) =>
+              request.status === "accepted" &&
+              new Date(request.schedule_time) > new Date()
+          );
+          const pendingRequests = data.filter(
+            (request) =>
+              request.status === "pending" &&
+              new Date(request.schedule_time) > new Date()
+          );
+          const rejectedRequests = data.filter(
+            (request) =>
+              request.status === "rejected" &&
+              new Date(request.schedule_time) > new Date()
+          );
+
+          displayRequests(acceptedRequests, "accepted-requests");
+          displayRequests(pendingRequests, "pending-requests");
+          displayRequests(rejectedRequests, "rejected-requests");
+        } catch (error) {
+          console.error("Error fetching interview requests:", error);
+        }
+      }
+
+      function displayRequests(requests, containerId) {
+        const container = document
+          .getElementById(containerId)
+          .querySelector("ul");
+        container.innerHTML = "";
+        requests.forEach((request) => {
+          const li = document.createElement("li");
+          li.textContent = `Interviewer ID: ${request.interviewer_id}, Scheduled Time: ${request.schedule_time}`;
+          if (containerId === "accepted-requests") {
+            joinButton = document.createElement("button");
+            joinButton.value = request.meeting_url;
+            joinButton.innerHTML = "Join Meeting";
+            joinButton.onclick = openModal;
+            li.appendChild(joinButton);
+          }
+
+          container.appendChild(li);
+        });
+      }
+
+      submitButton.addEventListener("click", async function () {
+        const interviewerId = interviewerDropdown.value;
+        const scheduleTime = datetimeInput.value;
+        if (!interviewerId || !scheduleTime) {
+          alert("Please select an interviewer and schedule time.");
+          return;
+        }
+
+        const requestData = {
+          interviewer_id: interviewerId,
+          schedule_time: scheduleTime,
+        };
+
+        try {
+          submitButton.classList.add("loading");
+          submitButton.disabled = true;
+
+          const response = await fetch(`${baseurl}/request-interview`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(requestData),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            alert("Request has been made successfully");
+          } else {
+            alert("Failed to make the request. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+        } finally {
+          submitButton.classList.remove("loading");
+          submitButton.disabled = false;
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const datetimeInput = document.getElementById("datetime");
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+
+        const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+        datetimeInput.min = formattedDateTime;
+        fetchTeachers();
+        fetchInterviewRequests();
+      });
+
+      function openModal(e) {
+        hidePopUp();
+        const modal = document.getElementById("meetModal");
+        const joinButton = document.getElementById("joinMeetingBtn");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const readyMessage = document.getElementById("readyMessage");
+        const modalHeader = document.getElementById("modalHeader");
+
+        modal.style.display = "flex";
+        joinButton.value = e.target.value;
+
+        const randomTime = Math.floor(Math.random() * 4) + 2;
+
+        setTimeout(() => {
+          loadingSpinner.style.display = "none"; // Hide the loader
+          readyMessage.style.display = "block"; // Show the "Ready to go" message
+          modalHeader.textContent = "Meeting is Ready";
+          joinButton.style.display = "inline-block"; // Show the "Join Meeting" button
+        }, randomTime * 1000);
+      }
+
+      function closeModal() {
+        document.getElementById("meetModal").style.display = "none";
+      }
+
+      function openMeeting(e) {
+        console.log(e);
+        const meetingUrl = e.target.value;
+        const width = 800;
+        const height = 600;
+        const left = screen.width / 2 - width / 2;
+        const top = screen.height / 2 - height / 2;
+
+        window.open(
+          meetingUrl,
+          "_blank",
+          `toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=${width},height=${height},top=${top},left=${left}`
+        );
+      }
     </script>
   </body>
 </html>

@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teacher Dashboard</title>
+    <title>Admin Dashboard</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -280,13 +284,311 @@
         text-decoration: none;
         color: white;
       }
+      .popup-container {
+        position: absolute;
+        width: 90%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        min-height: 40vh;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        max-width: 800px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        display: none;
+        max-height: 60%;
+      }
+
+      .fields {
+        /* display: none; */
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 20px;
+        background-color: rgb(252, 231, 231);
+        border-radius: 8px;
+        position: fixed;
+        z-index: 200;
+        height: 160px;
+      }
+
+      .fields {
+        display: none;
+        flex-direction: column; /* Arrange items in a column */
+        align-items: center; /* Stretch items to fill the container */
+        gap: 10px; /* Space between items */
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        z-index: 200;
+        height: 160px;
+      }
+
+      input[type="datetime-local"],
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s;
+      }
+
+      input[type="datetime-local"]:focus,
+      input[type="text"]:focus {
+        border-color: #4caf50;
+        outline: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .submit-request {
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        position: relative;
+      }
+
+      .submit-request:hover {
+        background-color: #45a049;
+      }
+
+      .submit-request.loading,
+      #reject-btn.loading {
+        cursor: not-allowed;
+        background-color: #ccc;
+      }
+
+      .submit-request.loading::after,
+      #reject-btn.loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-top: 2px solid #4caf50;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+      }
+
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      .fields .close-btn {
+        display: fixed;
+        top: 10px;
+        right: 10px;
+      }
+
+      .blur-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background-color: rgba(9, 9, 9, 0.3);
+        -webkit-backdrop-filter: blur(1px);
+        backdrop-filter: blur(1px);
+        display: none;
+      }
+
+      .close-btn {
+        border: none;
+        background-color: transparent;
+        font-size: larger;
+        position: absolute;
+        top: 10px;
+        right: 9px;
+        transition: all 0.3s ease-in-out;
+      }
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+
+      .close-btn:active {
+        transform: scale(0.9);
+      }
+
+      .requests-container {
+        width: 90%;
+        overflow-y: scroll;
+      }
+      .request-category {
+        margin-bottom: 20px;
+      }
+
+      .request-category h2 {
+        margin-bottom: 10px;
+      }
+
+      .request-category ul {
+        list-style: none;
+        padding: 0;
+        width: 90%;
+      }
+
+      .request-category ul li {
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        height: 50px;
+        align-items: center;
+      }
+
+      .request-category ul li button,
+      #reject-btn,
+      #update-btn {
+        border: none;
+        min-height: 90%;
+        color: white;
+        width: 60px;
+        background-color: #4dc551;
+        border-radius: 5px;
+        transition: transform 0.2s ease-in-out;
+        font-size: 14px;
+      }
+
+      .request-category ul li button:hover {
+        transform: scale(1.1);
+      }
+
+      .request-category ul li button:active {
+        transform: scale(0.9);
+      }
+
+      #accepted-requests ul li {
+        border: 2px solid;
+        border-color: #4dc551;
+      }
+
+      #pending-requests ul li {
+        border: 2px solid;
+        border-color: #ecdf1c;
+      }
+      #reject-btn {
+        background-color: red;
+      }
+      #update-btn {
+        background-color: #ecdf1c;
+        color: black;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        position: relative;
+        width: 90%;
+        max-width: 400px;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ff4d4d;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .close-btn:hover {
+        background: #d93636;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #007bff;
+        border-radius: 50%;
+        animation: spin2 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin2 {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .join-meeting {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: none; /* Initially hidden */
+      }
+
+      .join-meeting:hover {
+        background-color: #218838;
+      }
+
+      #readyMessage {
+        display: none;
+      }
     </style>
   </head>
 
   <body>
     <header>
-      <h1><a href="admin_dashboard.html">Teacher Portal</a></h1>
+      <h1><a href="admin_dashboard.html">Admin Portal</a></h1>
       <nav>
+        <button onclick="showPopUp(event)">Interview Requests</button>
         <button onclick="window.location.href = 'admin_dashboard.html';">
           Dashboard
         </button>
@@ -297,7 +599,7 @@
     </header>
 
     <div class="container">
-      <h1>Teacher Dashboard</h1>
+      <h1>Admin Dashboard</h1>
 
       <div class="add-subject">
         <input type="text" id="subjectInput" placeholder="Enter new subject" />
@@ -315,6 +617,54 @@
         <button id="reject-btn" onclick="closeDialog()">Reject</button>
       </div>
     </div>
+    <div class="popup-container">
+      <button class="close-btn" onclick="hidePopUp()">
+        <i class="bx bx-x"></i>
+      </button>
+      <div class="requests-container">
+        <div id="accepted-requests" class="request-category">
+          <h2>Accepted</h2>
+          <ul></ul>
+        </div>
+        <div id="pending-requests" class="request-category">
+          <h2>Pending</h2>
+          <ul></ul>
+        </div>
+      </div>
+      <div class="fields">
+        <button class="close-btn" onclick="closeFields()">
+          <i class="bx bx-x"></i>
+        </button>
+        <input type="datetime-local" id="datetime" />
+        <input
+          type="text"
+          placeholder="enter meeting url here"
+          id="meeting-url"
+        />
+        <button class="submit-request" onclick="handleConfirm(event)">
+          Confirm
+        </button>
+      </div>
+    </div>
+    <div class="modal" id="meetModal">
+      <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <h2 id="modalHeader">Preparing Your Meeting</h2>
+        <div class="loading-spinner" id="loadingSpinner"></div>
+        <p id="readyMessage">
+          Ready to go! Click the button below to join the meeting.
+        </p>
+        <button
+          class="join-meeting"
+          id="joinMeetingBtn"
+          onclick="openMeeting(event)"
+        >
+          Join Meeting
+        </button>
+      </div>
+    </div>
+    <div class="blur-bg"></div>
+
     <script>
       let subjects = [];
 
@@ -328,7 +678,25 @@
       let parsedQuestions = [];
       let currentSubjectId = null;
 
-      // Fetch subjects and questions when the page loads
+      function showPopUp(e) {
+        console.log(e);
+        const popupContainer = document.querySelector(".popup-container");
+        const blurContainer = document.querySelector(".blur-bg");
+        console.log(popupContainer);
+        console.log(blurContainer);
+        popupContainer.style.display = "flex";
+        blurContainer.style.display = "block";
+      }
+
+      function hidePopUp() {
+        const popupContainer = document.querySelector(".popup-container");
+        const blurContainer = document.querySelector(".blur-bg");
+        console.log(popupContainer);
+        console.log(blurContainer);
+        popupContainer.style.display = "none";
+        blurContainer.style.display = "none";
+      }
+
       window.onload = async function () {
         try {
           const response = await fetch(fetchSubjectsEndpoint, {
@@ -343,7 +711,6 @@
         }
       };
 
-      // Add a new subject
       async function addSubject() {
         const subjectInput = document.getElementById("subjectInput");
         const subjectName = subjectInput.value.trim();
@@ -598,6 +965,223 @@
         const questionsDiv = document.getElementById(`questions-${index}`);
         questionsDiv.style.display =
           questionsDiv.style.display === "none" ? "block" : "none";
+      }
+
+      async function fetchInterviewRequests() {
+        try {
+          const response = await fetch(`${apiBaseUrl}/interview-requests`, {
+            credentials: "include",
+          });
+          const data = await response.json();
+          console.log(data);
+          const acceptedRequests = data.filter(
+            (request) =>
+              request.status === "accepted" &&
+              new Date(request.schedule_time) > new Date()
+          );
+          const pendingRequests = data.filter(
+            (request) =>
+              request.status === "pending" &&
+              new Date(request.schedule_time) > new Date()
+          );
+          const rejectedRequests = data.filter(
+            (request) =>
+              request.status === "rejected" &&
+              new Date(request.schedule_time) > new Date()
+          );
+
+          displayRequests(acceptedRequests, "accepted-requests");
+          displayRequests(pendingRequests, "pending-requests");
+          // displayRequests(rejectedRequests, "rejected-requests");
+        } catch (error) {
+          console.error("Error fetching interview requests:", error);
+        }
+      }
+
+      function displayRequests(requests, containerId) {
+        const container = document
+          .getElementById(containerId)
+          .querySelector("ul");
+        container.innerHTML = "";
+        requests.forEach((request) => {
+          const li = document.createElement("li");
+          li.value = request.id;
+          li.textContent = `Interviewee ID: ${request.interviewee_id}, Scheduled Time: ${request.schedule_time}`;
+          if (containerId === "accepted-requests") {
+            joinButton = document.createElement("button");
+            joinButton.value = request.meeting_url;
+            joinButton.innerHTML = "join";
+            joinButton.onclick = openModal;
+            updateButton = document.createElement("button");
+            updateButton.value = request.id;
+            updateButton.innerHTML = "update";
+            updateButton.id = "update-btn";
+            updateButton.onclick = handleAcceptPopup.bind(null, request);
+            li.appendChild(joinButton);
+            li.appendChild(updateButton);
+          } else if (containerId === "pending-requests") {
+            acceptButton = document.createElement("button");
+            acceptButton.value = request.id;
+            acceptButton.innerHTML = "accept";
+            acceptButton.id = "accept-btn";
+            acceptButton.onclick = handleAcceptPopup.bind(null, request);
+            rejectButton = document.createElement("button");
+            rejectButton.value = request.id;
+            rejectButton.innerHTML = "reject";
+            rejectButton.id = "reject-btn";
+            rejectButton.onclick = handleReject;
+            li.appendChild(rejectButton);
+            li.appendChild(acceptButton);
+          }
+
+          container.appendChild(li);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        await fetchInterviewRequests();
+      });
+
+      function handleAcceptPopup(request, e) {
+        console.log(request);
+        console.log(e.target.value);
+        const datetime = document.getElementById("datetime");
+        datetime.value = request.schedule_time.slice(0, 16);
+        const confirmBtn = document.querySelector(".submit-request");
+        confirmBtn.value = request.id;
+        const meetingInput = document.querySelector("#meeting-url");
+        meetingInput.value = request.meeting_url;
+        const acceptPopup = document.querySelector(".fields");
+        acceptPopup.style.display = "flex";
+      }
+
+      function closeFields() {
+        const field = document.querySelector(".fields");
+        field.style.display = "none";
+      }
+
+      async function handleConfirm(e) {
+        const schedule_time = document.querySelector("#datetime").value;
+        const meeting_url = document.querySelector("#meeting-url").value;
+        if (meeting_url?.trim() == "") alert("meeting_url required");
+        const accepted = true;
+        const id = e.target.value;
+        console.log(schedule_time, meeting_url, accepted, id);
+
+        const requestData = {
+          schedule_time,
+          meeting_url,
+          accepted,
+          id,
+        };
+
+        try {
+          e.target.classList.add("loading");
+          e.target.disabled = true;
+          const response = await fetch(`${apiBaseUrl}/update-status`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(requestData),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            e.target.id == "update-btn"
+              ? alert("successfully updated interview schedule")
+              : alert("interview has been accepted");
+          } else {
+            alert("Failed to make the request. Please try again.");
+          }
+          await fetchInterviewRequests();
+        } catch (error) {
+          console.log("Error occured", error);
+          alert("An error occurred. Please try again.");
+        } finally {
+          e.target.classList.remove("loading");
+          e.target.disabled = false;
+          closeFields();
+        }
+      }
+
+      async function handleReject(e) {
+        const id = e.target.value;
+        const accepted = false;
+
+        const requestData = {
+          id,
+          accepted,
+        };
+
+        try {
+          e.target.classList.add("loading");
+          e.target.disabled = true;
+          const response = await fetch(`${apiBaseUrl}/update-status`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(requestData),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            alert("Request has been rejected");
+          } else {
+            alert("Failed to make the request. Please try again.");
+          }
+
+          await fetchInterviewRequests();
+        } catch (error) {
+          console.log("Error occured", error);
+          alert("An error occurred. Please try again.");
+        } finally {
+          e.target.classList.remove("loading");
+          e.target.disabled = false;
+          closeFields();
+        }
+      }
+
+      function openModal(e) {
+        hidePopUp();
+        const modal = document.getElementById("meetModal");
+        const joinButton = document.getElementById("joinMeetingBtn");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const readyMessage = document.getElementById("readyMessage");
+        const modalHeader = document.getElementById("modalHeader");
+
+        modal.style.display = "flex";
+        joinButton.value = e.target.value;
+        // Show loader for a random time between 3 to 6 seconds
+        const randomTime = Math.floor(Math.random() * 4);
+        setTimeout(() => {
+          loadingSpinner.style.display = "none"; // Hide the loader
+          readyMessage.style.display = "block"; // Show the "Ready to go" message
+          modalHeader.textContent = "Meeting is Ready";
+          joinButton.style.display = "inline-block"; // Show the "Join Meeting" button
+        }, randomTime * 1000);
+      }
+
+      function closeModal() {
+        document.getElementById("meetModal").style.display = "none";
+      }
+
+      function openMeeting(e) {
+        console.log(e);
+        const meetingUrl = e.target.value;
+        const width = 800;
+        const height = 600;
+        const left = screen.width / 2 - width / 2;
+        const top = screen.height / 2 - height / 2;
+
+        window.open(
+          meetingUrl,
+          "_blank",
+          `toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=${width},height=${height},top=${top},left=${left}`
+        );
       }
     </script>
   </body>

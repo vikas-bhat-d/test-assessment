@@ -2,9 +2,9 @@ import User from "../model/user.model.js";
 import asyncHandler from "../utils/asyncHandler.utils.js";
 import apiResponse from "../utils/apiResponse.utils.js";
 import db from "../database/db.js";
-import { sendFeedback } from "../utils/mail.js";
+import { sendFeedback, sendRequestStatusMail } from "../utils/mail.js";
 import XLSX from "xlsx";
-import { promises as fs } from "fs";
+import { accessSync, promises as fs, stat } from "fs";
 
 const cookieOptions = {
   httpOnly: true,
@@ -385,4 +385,93 @@ export const parseExcel = asyncHandler(async (req, res, next) => {
   console.log(jsonArray);
   await fs.unlink(req.file?.path);
   res.json(jsonArray);
+});
+
+export const requestInterview = asyncHandler(async (req, res, next) => {
+  const { interviewer_id, schedule_time } = req.body;
+  const interviewee_id = req?.user?.id;
+  const interviewee_name = req.user.username;
+  console.log("interviewy_id", interviewee_id);
+  console.log(schedule_time);
+  const sql =
+    "INSERT INTO interview_schedules(interviewer_id,interviewee_id,schedule_time) values(?,?,?)";
+  const [result] = await db.execute(sql, [
+    interviewer_id,
+    interviewee_id,
+    schedule_time,
+  ]);
+  console.log(req.user.username);
+
+  const interviewer_details = await User.findById(interviewer_id);
+  const mailResult = await sendRequestStatusMail({
+    email: interviewer_details.email,
+    text_message: `dear ${interviewer_details.username},\nYou have recieved the new request for interview schedule by ${interviewee_name}`,
+  });
+  res
+    .status(200)
+    .send(
+      new apiResponse(
+        200,
+        { result, mailResult },
+        "Request has been made succesfully"
+      )
+    );
+});
+
+export const getInterviewRequests = asyncHandler(async (req, res, next) => {
+  const { q } = req.query;
+  const userId = req.user.id;
+  console.log(userId);
+  let sql =
+    "SELECT * FROM interview_schedules WHERE interviewer_id=? OR interviewee_id=? and status=?;";
+  if (!q)
+    sql =
+      "SELECT * FROM interview_schedules WHERE interviewer_id=? OR interviewee_id=?;";
+  console.log(sql);
+  let result;
+  if (!q || q == undefined) [result] = await db.execute(sql, [userId, userId]);
+  else [result] = await db.execute(sql, [userId, userId, q]);
+  console.log(result);
+  res.send(result);
+});
+
+export const updateInterviewStatus = asyncHandler(async (req, res, next) => {
+  let { id, accepted, meeting_url, schedule_time } = req.body;
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  console.log(user.role);
+  if (user?.role !== "teacher")
+    return res.status(400).send("unauthorized request");
+  if (typeof accepted == "string")
+    accepted = accepted === "true" ? true : false;
+
+  const status = accepted ? "accepted" : "rejected";
+
+  let result;
+
+  console.log("acccepted2:", accepted);
+  if (status === "rejected") {
+    const sql = "UPDATE interview_schedules SET status=? WHERE (id=?)";
+    [result] = await db.execute(sql, [status, id]);
+  } else {
+    if (!meeting_url) res.status(400).send("missing meeting url");
+    const sql =
+      "UPDATE interview_schedules SET status=?,meeting_url=?,schedule_time=? WHERE (id=?)";
+    [result] = await db.execute(sql, [status, meeting_url, schedule_time, id]);
+  }
+  const sql =
+    "SELECT u.* FROM users u JOIN interview_schedules isch ON u.id = isch.interviewee_id WHERE isch.id = ?;";
+  const [interviewee_details] = await db.execute(sql, [id]);
+  console.log(interviewee_details);
+  const mailResult = await sendRequestStatusMail({
+    email: interviewee_details[0].email,
+    text_message: `dear ${interviewee_details[0].username},\nYour request for the interview has been ${status} and is scheduled for ${schedule_time} , Please visit your dashboard for more details.
+    `,
+  });
+  console.log(status);
+  res
+    .status(200)
+    .send(
+      new apiResponse(200, { result, mailResult }, "status updated succesfully")
+    );
 });
