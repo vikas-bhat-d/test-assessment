@@ -189,7 +189,9 @@
   </head>
   <body>
     <header>
-      <h1><a href="test.html">Student Dashboard</a></h1>
+      <h1>
+        <a href="test.html">Learning Portal </a>
+      </h1>
       <nav>
         <button onclick="showDashboard()">
           <i class="bx bx-home"></i> Dashboard
@@ -204,10 +206,7 @@
       a
       <h1>Student Dashboard</h1>
       <label for="teacherSelect">Select To:</label>
-      <select id="teacherSelect">
-        <option value="15">ADMIN</option>
-        <option value="17">HR</option>
-      </select>
+      <select id="teacherSelect"></select>
       <button class="record-button" onclick="showVideoRecorder()">
         <i class="bx bx-video-recording"></i> Record Video
       </button>
@@ -240,7 +239,7 @@
       const stopBtn = document.getElementById("stopBtn");
       const uploadBtn = document.getElementById("uploadBtn");
       const alertBox = document.getElementById("alert");
-      const teacherSelect = document.getElementById("teacherSelect");
+      const teacherDropdown = document.getElementById("teacherSelect");
       const uploadedVideosContainer = document.getElementById(
         "uploadedVideosContainer"
       );
@@ -248,7 +247,19 @@
       let mediaRecorder;
       let recordedChunks = [];
 
-      // Initialize Webcam
+      async function fetchTeachers() {
+        const response = await fetch(`${baseurl}/teachers`, {
+          credentials: "include",
+        });
+        const teachers = await response.json();
+
+        teachers.data.forEach((teacher) => {
+          const option = document.createElement("option");
+          option.value = teacher.id;
+          option.textContent = teacher.username;
+          teacherDropdown.appendChild(option);
+        });
+      }
       async function initWebcam() {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
@@ -269,7 +280,7 @@
         }
       }
       initWebcam();
-
+      fetchTeachers();
       // Start Recording
       startBtn.addEventListener("click", () => {
         recordedChunks = [];
@@ -291,7 +302,6 @@
       uploadBtn.addEventListener("click", async () => {
         const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
         const blobUrl = URL.createObjectURL(videoBlob, "video/webm");
-        console.log(blobUrl);
         const formData = new FormData();
         formData.append("video", videoBlob, "video.webm");
         formData.append("to_id", teacherSelect.value);

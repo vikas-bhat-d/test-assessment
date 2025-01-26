@@ -405,7 +405,7 @@ export const requestInterview = asyncHandler(async (req, res, next) => {
   const interviewer_details = await User.findById(interviewer_id);
   const mailResult = await sendRequestStatusMail({
     email: interviewer_details.email,
-    text_message: `dear ${interviewer_details.username},\nYou have recieved the new request for interview schedule by ${interviewee_name}`,
+    text_message: `dear ${interviewer_details.username},\nYou have recieved the new request for interview schedule from ${interviewee_name}`,
   });
   res
     .status(200)
@@ -465,7 +465,11 @@ export const updateInterviewStatus = asyncHandler(async (req, res, next) => {
   console.log(interviewee_details);
   const mailResult = await sendRequestStatusMail({
     email: interviewee_details[0].email,
-    text_message: `dear ${interviewee_details[0].username},\nYour request for the interview has been ${status} and is scheduled for ${schedule_time} , Please visit your dashboard for more details.
+    text_message: `dear ${
+      interviewee_details[0].username
+    },\nYour request for the interview has been ${status} ${
+      status === "accepted" ? `and is scheduled for ${schedule_time}` : ""
+    }, Please visit your dashboard for more details.
     `,
   });
   console.log(status);

@@ -417,6 +417,10 @@
         display: none;
       }
 
+      .heading {
+        color: white;
+      }
+
       @keyframes spin {
         0% {
           transform: translate(-50%, -50%) rotate(0deg);
@@ -452,7 +456,7 @@
     <header>
       <div style="display: flex; align-items: center">
         <i class="bx bx-user-circle student-icon"></i>
-        <h1>Learning Portal</h1>
+        <h1 class="heading">Learning Portal</h1>
       </div>
       <nav>
         <button class="request-button" onclick="showPopUp(event)">
@@ -509,7 +513,7 @@
       </div>
     </div>
     <div class="popup-container">
-      <button class="close-btn" onclick="hidePopUp(event)">
+      <button class="close-btn" onclick="hidePopUp()">
         <i class="bx bx-x"></i>
       </button>
       <div>
@@ -555,9 +559,7 @@
         const response = await fetch(`${baseurl}/teachers`, {
           credentials: "include",
         });
-        console.log(response);
         const teachers = await response.json();
-        console.log(teachers);
 
         teachers.data.forEach((teacher) => {
           const option = document.createElement("option");
@@ -582,7 +584,6 @@
           { credentials: "include" }
         );
         const subjects = await response.json();
-        console.log(subjects);
 
         subjects.data.forEach((subject) => {
           const option = document.createElement("option");
@@ -623,21 +624,15 @@
       });
 
       function showPopUp(e) {
-        console.log(e);
         const popupContainer = document.querySelector(".popup-container");
         const blurContainer = document.querySelector(".blur-bg");
-        console.log(popupContainer);
-        console.log(blurContainer);
         popupContainer.style.display = "flex";
         blurContainer.style.display = "block";
       }
 
-      function hidePopUp(e) {
-        console.log(e);
+      function hidePopUp() {
         const popupContainer = document.querySelector(".popup-container");
         const blurContainer = document.querySelector(".blur-bg");
-        console.log(popupContainer);
-        console.log(blurContainer);
         popupContainer.style.display = "none";
         blurContainer.style.display = "none";
       }
@@ -648,7 +643,6 @@
             credentials: "include",
           });
           const data = await response.json();
-          console.log(data);
           const acceptedRequests = data.filter(
             (request) =>
               request.status === "accepted" &&
@@ -722,6 +716,8 @@
           const result = await response.json();
           if (result.success) {
             alert("Request has been made successfully");
+            hidePopUp();
+            fetchInterviewRequests();
           } else {
             alert("Failed to make the request. Please try again.");
           }
@@ -776,7 +772,6 @@
       }
 
       function openMeeting(e) {
-        console.log(e);
         const meetingUrl = e.target.value;
         const width = 800;
         const height = 600;

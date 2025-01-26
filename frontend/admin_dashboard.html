@@ -327,7 +327,8 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         position: fixed;
         z-index: 200;
-        height: 160px;
+        height: 200px;
+        width: 300px;
       }
 
       input[type="datetime-local"],
@@ -462,6 +463,7 @@
       .request-category ul li button,
       #reject-btn,
       #update-btn {
+        position: relative;
         border: none;
         min-height: 90%;
         color: white;
@@ -679,11 +681,8 @@
       let currentSubjectId = null;
 
       function showPopUp(e) {
-        console.log(e);
         const popupContainer = document.querySelector(".popup-container");
         const blurContainer = document.querySelector(".blur-bg");
-        console.log(popupContainer);
-        console.log(blurContainer);
         popupContainer.style.display = "flex";
         blurContainer.style.display = "block";
       }
@@ -691,8 +690,6 @@
       function hidePopUp() {
         const popupContainer = document.querySelector(".popup-container");
         const blurContainer = document.querySelector(".blur-bg");
-        console.log(popupContainer);
-        console.log(blurContainer);
         popupContainer.style.display = "none";
         blurContainer.style.display = "none";
       }
@@ -879,11 +876,6 @@
       // Submit the parsed questions to the API
       async function submitQuestions() {
         try {
-          console.log(
-            submitQuestionsEndpoint,
-            parsedQuestions,
-            currentSubjectId
-          );
           const response = await fetch(submitQuestionsEndpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -973,7 +965,6 @@
             credentials: "include",
           });
           const data = await response.json();
-          console.log(data);
           const acceptedRequests = data.filter(
             (request) =>
               request.status === "accepted" &&
@@ -1043,8 +1034,6 @@
       });
 
       function handleAcceptPopup(request, e) {
-        console.log(request);
-        console.log(e.target.value);
         const datetime = document.getElementById("datetime");
         datetime.value = request.schedule_time.slice(0, 16);
         const confirmBtn = document.querySelector(".submit-request");
@@ -1066,7 +1055,6 @@
         if (meeting_url?.trim() == "") alert("meeting_url required");
         const accepted = true;
         const id = e.target.value;
-        console.log(schedule_time, meeting_url, accepted, id);
 
         const requestData = {
           schedule_time,
@@ -1155,13 +1143,12 @@
 
         modal.style.display = "flex";
         joinButton.value = e.target.value;
-        // Show loader for a random time between 3 to 6 seconds
         const randomTime = Math.floor(Math.random() * 4);
         setTimeout(() => {
-          loadingSpinner.style.display = "none"; // Hide the loader
-          readyMessage.style.display = "block"; // Show the "Ready to go" message
+          loadingSpinner.style.display = "none";
+          readyMessage.style.display = "block";
           modalHeader.textContent = "Meeting is Ready";
-          joinButton.style.display = "inline-block"; // Show the "Join Meeting" button
+          joinButton.style.display = "inline-block";
         }, randomTime * 1000);
       }
 
@@ -1170,7 +1157,6 @@
       }
 
       function openMeeting(e) {
-        console.log(e);
         const meetingUrl = e.target.value;
         const width = 800;
         const height = 600;
