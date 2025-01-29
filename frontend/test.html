@@ -676,7 +676,7 @@
           const li = document.createElement("li");
           li.textContent = `Interviewer ID: ${request.interviewer_id}, Scheduled Time: ${request.schedule_time}`;
           if (containerId === "accepted-requests") {
-            joinButton = document.createElement("button");
+            const joinButton = document.createElement("button");
             joinButton.value = request.meeting_url;
             joinButton.innerHTML = "Join Meeting";
             joinButton.onclick = openModal;
